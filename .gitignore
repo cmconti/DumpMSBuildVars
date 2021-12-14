@@ -337,14 +337,10 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
 
-# Local History for Visual Studio
-.localhistory/
+Flat.vcxproj
+vcxproj-Build.txt
+vcxproj.txt
 
-# BeatPulse healthcheck temp database
-healthchecksdb
-
-# Backup folder for Package Reference Convert tool in Visual Studio 2017
-MigrationBackup/
-
-# Ionide (cross platform F# VS Code tools) working folder
-.ionide/
+Flat.csproj
+csproj-Build.txt
+csproj.txt
