@@ -26,6 +26,7 @@ e.g.
 ```
 
 If the value is set to something else during the build, the diagnostic output will contain a line similar to:
+
 `Property reassignment: $(MyFunkyVar)="newFunkyVal" (previous value: "") at C:\repodir\DumpMSBuildVars\CSHelloWorld\CSHelloWorld.csproj (32,5)`
 
 
@@ -43,7 +44,7 @@ the variables.txt content will be formatted like this:
 ----------------VCXPROJ----------------
 <msbuild command line for the C++ project>
 
-<list of environment variables as seen in a pre-build step of the C++ project>
+<list of environment variables from msbuild diagnostic output>
 
 <list of any properties that were reassigned during the build>
 
@@ -53,7 +54,7 @@ the variables.txt content will be formatted like this:
 ----------------CSPROJ----------------
 <msbuild command line for the C# project>
 
-<list of environment variables as seen in a pre-build step of the C# project>
+<list of environment variables from msbuild diagnostic output>
 
 <list of any properties that were reassigned during the build>
 
@@ -99,3 +100,9 @@ How does it do it?
 Compiles the vcxproj/csproj with diagnostic output logged to a file which is parsed for the command line and environment variables
 
 Creates a flattened project file (msbuild.exe ... /pp:Flat.csproj) and then parses the flattened project file looking for PropertyGroup nodes.
+
+
+
+Credit for idea to [Filip Skakun's answer](https://stackoverflow.com/a/35027951) at
+
+https://stackoverflow.com/questions/4548618/list-all-defined-msbuild-variables-equivalent-to-set

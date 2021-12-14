@@ -15,36 +15,40 @@ $MSBuildEXE = "$VSRootDir\MSBuild\Current\Bin\MSBuild.exe"
 
 # based on https://stackoverflow.com/questions/4548618/list-all-defined-msbuild-variables-equivalent-to-set
 
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /t:Clean | out-null
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /t:Build | Set-Content vcxproj-Build.txt
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /pp:Flat.vcxproj | Set-Content vcxproj.txt
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /t:Clean | out-null
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /t:Build | Set-Content vcxproj-Build.txt
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=Win32 "$PSScriptRoot\CPPHelloWorld\CPPHelloWorld.vcxproj" /pp:Flat.vcxproj | Set-Content vcxproj.txt
 
 $build = Get-Content .\vcxproj-Build.txt
 $commandline = ($build | Select-String '^Command line arguments = "(.*)"$').Matches[0].Groups[1].Value
-$envvar = (([regex]::Match($build, 'VCEnd(.*?)Done')).Groups[1].Value).Replace('   ',"`r`n")
+$envvar = (([regex]::Match($build -join 'qweqwe', 'Environment at start of build:(.*?)qweqweqweqweProcess = ')).Groups[1].Value).Replace('qweqwe',"`r`n")
 $reassign = (($build | Select-String '^Property reassignment: (.*)').Matches | ForEach-Object{$_.Groups[1].Value})
 
 ""
 "----------------VCXPROJ----------------"
 $commandline
+"---Env Vars---"
 $envvar
+"---Reassigned Vars---"
 $reassign
 "---Prop Groups---"
 .\Parse-PropertyGroup .\Flat.vcxproj
 
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /t:Clean | out-null
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /t:Build | Set-Content csproj-Build.txt
-& "$MSBuildEXE" /v:detailed /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /pp:Flat.csproj | Set-Content csproj.txt
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /t:Clean | out-null
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /t:Build | Set-Content csproj-Build.txt
+& "$MSBuildEXE" /v:diagnostic /fl /p:Configuration=Debug /p:Platform=AnyCPU "$PSScriptRoot\CSHelloWorld\CSHelloWorld.csproj" /pp:Flat.csproj | Set-Content csproj.txt
 
 $build = Get-Content .\csproj-Build.txt
 $commandline = ($build | Select-String '^Command line arguments = "(.*)"$').Matches[0].Groups[1].Value
-$envvar = (([regex]::Match($build, 'VCEnd(.*?)Done')).Groups[1].Value).Replace('   ',"`r`n")
+$envvar = (([regex]::Match($build -join 'qweqwe', 'Environment at start of build:(.*?)qweqweqweqweProcess = ')).Groups[1].Value).Replace('qweqwe',"`r`n")
 $reassign = (($build | Select-String '^Property reassignment: (.*)').Matches | ForEach-Object{$_.Groups[1].Value})
 
 ""
 "----------------CSPROJ----------------"
 $commandline
+"---Env Vars---"
 $envvar
+"---Reassigned Vars---"
 $reassign
 "---Prop Groups---"
 .\Parse-PropertyGroup .\Flat.csproj
