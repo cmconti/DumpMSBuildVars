@@ -18,4 +18,8 @@ jobs:
           nuget-version: '5.x'
       - run: nuget restore CSHelloWorld.sln
       - uses: microsoft/setup-msbuild@v1
+      - run: |
+          ./Dump-MSBuildProperties.ps1
+        condition: true
       - run: msbuild CSHelloWorld.sln -property:Configuration=Release
+        condition: false
