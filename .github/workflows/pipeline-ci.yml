@@ -20,6 +20,6 @@ jobs:
       - uses: microsoft/setup-msbuild@v1
       - run: |
           ./Dump-MSBuildProperties.ps1
-        condition: true
+        if: true
       - run: msbuild CSHelloWorld.sln -property:Configuration=Release
-        condition: false
+        if: false
