@@ -1,0 +1,2 @@
+# DumpMSBuildVars
+Dump MSBuild vars
